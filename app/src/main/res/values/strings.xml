@@ -13,4 +13,5 @@
         <item>@string/title_jian_dan</item>
         <item>@string/title_nhdz</item>
     </string-array>
+    <string name="unknown_author">UnKnown</string>
 </resources>
