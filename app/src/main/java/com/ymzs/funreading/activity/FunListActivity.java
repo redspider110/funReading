@@ -1,7 +1,6 @@
 package com.ymzs.funreading.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -28,6 +27,7 @@ public class FunListActivity extends BaseActivity {
     public static final int VIEW_PAGER_LIMIT = 3;
     private DrawerLayout mDrawerLayout;
     private FunListFragment mFunListFragment;
+    private FunListContract.Presenter mFunListPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,8 @@ public class FunListActivity extends BaseActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_fun_list_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        //DataRepository dataRepository = new DataRepository(new RemoteDataSource());
-        //FunListPresenter presenter = new FunListPresenter(dataRepository);
-
+        DataRepository dataRepository = new DataRepository(new RemoteDataSource());
+        mFunListPresenter = new FunListPresenter(dataRepository);
     }
 
     private class FunListPagerAdapter extends FragmentPagerAdapter{
@@ -83,6 +82,7 @@ public class FunListActivity extends BaseActivity {
                 //mFunListFragment = QsbkFragment.newInstance();
             }
             mFunListFragment = QsbkFragment.newInstance();
+            mFunListFragment.setFunListPresenter(mFunListPresenter);
             return mFunListFragment;
         }
 
