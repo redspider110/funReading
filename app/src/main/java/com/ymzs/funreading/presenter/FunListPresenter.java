@@ -1,5 +1,7 @@
 package com.ymzs.funreading.presenter;
 
+import android.util.Log;
+
 import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
 import com.ymzs.funreading.model.DataSource;
@@ -19,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class FunListPresenter implements FunListContract.Presenter{
+    private static final String TAG = ":XMT:FunListPresenter:";
     public DataRepository mDataRepository;
     public FunListContract.View mFunListView;
     public Disposable mDisposable;
@@ -59,12 +62,15 @@ public class FunListPresenter implements FunListContract.Presenter{
 
                     @Override
                     public void onSuccess(@NonNull List<Fun> funs) {
+                        for(Fun fun : funs) {
+                            Log.d(TAG, "onSuccess: fun = " + fun.getAuthor());
+                        }
                         mFunListView.showFuns(funs);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        // null
+                        Log.d(TAG, "onError: e = " + e);
                     }
                 });
 
