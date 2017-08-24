@@ -24,7 +24,12 @@ public class QsbkAdapter implements FunAdapter {
         List<QsbkFun.Item> items = mQsbkFun.getItems();
         for(QsbkFun.Item item : items){
             Fun fun = new Fun();
-            fun.setAuthor(item.getUser().getLogin());
+            QsbkFun.User user = item.getUser();
+            if(user == null){
+                fun.setAuthor("");
+            }else{
+                fun.setAuthor(user.getLogin());
+            }
             fun.setTime(item.getPublished_at());
             fun.setContent(item.getContent());
             funs.add(fun);
