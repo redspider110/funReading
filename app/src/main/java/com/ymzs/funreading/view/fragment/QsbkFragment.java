@@ -14,9 +14,13 @@ import com.ymzs.funreading.R;
  */
 public class QsbkFragment extends FunListFragment {
 
-
     public QsbkFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public String getName() {
+        return QsbkFragment.class.getSimpleName();
     }
 
     public static QsbkFragment newInstance(){

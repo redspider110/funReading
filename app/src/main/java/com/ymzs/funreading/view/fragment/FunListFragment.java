@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public abstract class FunListFragment extends BaseFragment implements FunListContract.View{
+    private static final String TAG = ":XMT:FunListFragment:";
     public FunListContract.Presenter mFunListPresenter;
     private RecyclerView mFunRecyclerView;
     private FunListAdapter mFunListAdapter;
@@ -30,7 +32,10 @@ public abstract class FunListFragment extends BaseFragment implements FunListCon
 
     public void setFunListPresenter(FunListContract.Presenter presenter) {
         mFunListPresenter = presenter;
+        Log.d(TAG, "setFunListPresenter: Name = " + getName());
     }
+
+    public abstract String getName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

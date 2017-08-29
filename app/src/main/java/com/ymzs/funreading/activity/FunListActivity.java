@@ -1,6 +1,5 @@
 package com.ymzs.funreading.activity;
 
-import android.content.Context;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,14 +19,15 @@ import com.ymzs.funreading.model.DataRepository;
 import com.ymzs.funreading.model.remote.RemoteDataSource;
 import com.ymzs.funreading.presenter.FunListPresenter;
 import com.ymzs.funreading.view.fragment.FunListFragment;
+import com.ymzs.funreading.view.fragment.JiandanFragment;
+import com.ymzs.funreading.view.fragment.NhdzFragment;
 import com.ymzs.funreading.view.fragment.QsbkFragment;
 
 public class FunListActivity extends BaseActivity {
 
     public static final int VIEW_PAGER_LIMIT = 3;
     private DrawerLayout mDrawerLayout;
-    private FunListFragment mFunListFragment;
-    private FunListContract.Presenter mFunListPresenter;
+    private DataRepository mDataRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,40 +50,40 @@ public class FunListActivity extends BaseActivity {
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.activity_fun_list_viewPager);
         viewPager.setOffscreenPageLimit(VIEW_PAGER_LIMIT);
-        viewPager.setAdapter(new FunListPagerAdapter(getSupportFragmentManager(), this));
+        viewPager.setAdapter(new FunListPagerAdapter(getSupportFragmentManager()));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_fun_list_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        DataRepository dataRepository = new DataRepository(new RemoteDataSource());
-        mFunListPresenter = new FunListPresenter(dataRepository);
+        mDataRepository = new DataRepository(new RemoteDataSource());
     }
 
     private class FunListPagerAdapter extends FragmentPagerAdapter{
         private String[] mTitles;
 
-        public FunListPagerAdapter(FragmentManager fm, Context context) {
+        public FunListPagerAdapter(FragmentManager fm) {
             super(fm);
             mTitles = getResources().getStringArray(R.array.view_pager_titles);
         }
 
         @Override
         public Fragment getItem(int position) {
+            FunListFragment funListFragment;
             String title = mTitles[position];
             String qsbk = getString(R.string.title_qsbk);
             String jiandan = getString(R.string.title_jian_dan);
             String nhdz = getString(R.string.title_nhdz);
             if(title.equals(qsbk)){
-                //mFunListFragment = QsbkFragment.newInstance();
+                funListFragment = QsbkFragment.newInstance();
             }else if(title.equals(jiandan)){
-
+                funListFragment = JiandanFragment.newInstance();
             }else if(title.equals(nhdz)){
-
+                funListFragment = NhdzFragment.newInstance();
             }else {
-                //mFunListFragment = QsbkFragment.newInstance();
+                funListFragment = QsbkFragment.newInstance();
             }
-            mFunListFragment = QsbkFragment.newInstance();
-            mFunListFragment.setFunListPresenter(mFunListPresenter);
-            return mFunListFragment;
+            FunListContract.Presenter funListPresenter = new FunListPresenter(mDataRepository);
+            funListFragment.setFunListPresenter(funListPresenter);
+            return funListFragment;
         }
 
         @Override

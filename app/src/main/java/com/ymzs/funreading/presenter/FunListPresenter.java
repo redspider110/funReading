@@ -4,12 +4,11 @@ import android.util.Log;
 
 import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
-import com.ymzs.funreading.model.DataSource;
 import com.ymzs.funreading.model.Fun;
+import com.ymzs.funreading.view.fragment.FunListFragment;
 
 import java.util.List;
 
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -42,7 +41,11 @@ public class FunListPresenter implements FunListContract.Presenter{
 
     @Override
     public void takeView(FunListContract.View view) {
+        Log.d(TAG, "takeView: ");
         mFunListView = view;
+        if(mFunListView instanceof FunListFragment){
+            Log.d(TAG, "takeView: view = " + ((FunListFragment) mFunListView).getName());
+        }
     }
 
     @Override
