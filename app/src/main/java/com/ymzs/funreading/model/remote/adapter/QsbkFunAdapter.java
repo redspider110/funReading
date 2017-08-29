@@ -1,20 +1,23 @@
-package com.ymzs.funreading.model.remote.entity.qsbk;
+package com.ymzs.funreading.model.remote.adapter;
 
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.FunAdapter;
+import com.ymzs.funreading.model.remote.entity.QsbkFun;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by xumingtao on 2017/8/23.
  */
 
-public class QsbkAdapter implements FunAdapter {
+public class QsbkFunAdapter implements FunAdapter {
 
     private QsbkFun mQsbkFun;
 
-    public QsbkAdapter(QsbkFun fun){
+    public QsbkFunAdapter(QsbkFun fun){
         mQsbkFun = fun;
     }
 
@@ -30,7 +33,9 @@ public class QsbkAdapter implements FunAdapter {
             }else{
                 fun.setAuthor(user.getLogin());
             }
-            fun.setTime(item.getPublished_at());
+            Date date = new Date(item.getPublished_at() * 1000);
+            String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+            fun.setTime(time);
             fun.setContent(item.getContent());
             funs.add(fun);
         }

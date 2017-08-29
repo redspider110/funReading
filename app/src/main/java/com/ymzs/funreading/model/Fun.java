@@ -6,7 +6,7 @@ package com.ymzs.funreading.model;
 
 public class Fun {
     private String mAuthor;
-    private long mTime;
+    private String mTime;
     private String mContent;
 
     public String getAuthor() {
@@ -17,11 +17,11 @@ public class Fun {
         this.mAuthor = mAuthor;
     }
 
-    public long getTime() {
+    public String getTime() {
         return mTime;
     }
 
-    public void setTime(long mTime) {
+    public void setTime(String mTime) {
         this.mTime = mTime;
     }
 

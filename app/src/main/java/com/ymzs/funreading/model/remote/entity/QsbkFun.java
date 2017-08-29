@@ -1,4 +1,4 @@
-package com.ymzs.funreading.model.remote.entity.qsbk;
+package com.ymzs.funreading.model.remote.entity;
 
 import java.util.List;
 
