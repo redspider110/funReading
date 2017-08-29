@@ -24,6 +24,7 @@ public class FunListPresenter implements FunListContract.Presenter{
     public DataRepository mDataRepository;
     public FunListContract.View mFunListView;
     public Disposable mDisposable;
+    private boolean mIsRefreshing = false;
 
     public FunListPresenter(DataRepository dataRepository){
         mDataRepository = dataRepository;
@@ -69,11 +70,13 @@ public class FunListPresenter implements FunListContract.Presenter{
                             Log.d(TAG, "onSuccess: fun = " + fun.getAuthor());
                         }
                         mFunListView.showFuns(funs);
+                        showRefresh(true);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: e = " + e);
+                        showRefresh(false);
                     }
                 });
 
@@ -82,6 +85,23 @@ public class FunListPresenter implements FunListContract.Presenter{
     private void dispose(){
         if(mDisposable != null && !mDisposable.isDisposed()){
             mDisposable.dispose();
+        }
+    }
+
+    @Override
+    public void refresh() {
+        mIsRefreshing = true;
+        loadFuns();
+    }
+
+    private void showRefresh(boolean isOK){
+        if(mIsRefreshing){
+            mIsRefreshing = false;
+            if(isOK){
+                mFunListView.showRefreshError();
+            }else {
+                mFunListView.showRefreshOK();
+            }
         }
     }
 }

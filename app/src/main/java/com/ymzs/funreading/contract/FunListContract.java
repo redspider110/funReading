@@ -14,9 +14,11 @@ public interface FunListContract {
 
     interface View extends BaseView<Presenter>{
         void showFuns(List<Fun> funs);
+        void showRefreshOK();
+        void showRefreshError();
     }
 
     interface Presenter extends BasePresenter<View>{
-
+        void refresh();
     }
 }

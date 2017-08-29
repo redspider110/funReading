@@ -2,6 +2,7 @@ package com.ymzs.funreading.view.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,7 @@ public abstract class FunListFragment extends BaseFragment implements FunListCon
     public FunListContract.Presenter mFunListPresenter;
     private RecyclerView mFunRecyclerView;
     private FunListAdapter mFunListAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public FunListFragment() {
         // Required empty public constructor
@@ -47,12 +49,33 @@ public abstract class FunListFragment extends BaseFragment implements FunListCon
         mFunListAdapter = new FunListAdapter(getContext());
         mFunListAdapter.setData(new ArrayList<Fun>(0));
         mFunRecyclerView.setAdapter(mFunListAdapter);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.fragment_fun_list_swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mFunListPresenter.refresh();
+            }
+        });
         return root;
     }
 
     @Override
     public void showFuns(List<Fun> funs) {
         mFunListAdapter.setData(funs);
+    }
+
+    @Override
+    public void showRefreshOK(){
+        if(mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void showRefreshError(){
+        if(mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
