@@ -5,7 +5,11 @@ import android.util.Log;
 import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
 import com.ymzs.funreading.model.Fun;
+import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.view.fragment.FunListFragment;
+import com.ymzs.funreading.view.fragment.JiandanFragment;
+import com.ymzs.funreading.view.fragment.NhdzFragment;
+import com.ymzs.funreading.view.fragment.QsbkFragment;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class FunListPresenter implements FunListContract.Presenter{
     public FunListContract.View mFunListView;
     public Disposable mDisposable;
     private boolean mIsRefreshing = false;
+    private int apiType = ApiConstants.API_TYPE_QSBK;
 
     public FunListPresenter(DataRepository dataRepository){
         mDataRepository = dataRepository;
@@ -46,6 +51,13 @@ public class FunListPresenter implements FunListContract.Presenter{
         mFunListView = view;
         if(mFunListView instanceof FunListFragment){
             Log.d(TAG, "takeView: view = " + ((FunListFragment) mFunListView).getName());
+            if(mFunListView instanceof JiandanFragment){
+                apiType = ApiConstants.API_TYPE_JIANDAN;
+            }else if(mFunListView instanceof NhdzFragment){
+                apiType = ApiConstants.API_TYPE_NHDZ;
+            }else {
+                apiType = ApiConstants.API_TYPE_QSBK;
+            }
         }
     }
 
@@ -55,7 +67,8 @@ public class FunListPresenter implements FunListContract.Presenter{
     }
 
     private void loadFuns(){
-        mDataRepository.getFuns()
+        Log.d(TAG, "loadFuns: apiType = " + apiType);
+        mDataRepository.getFuns(apiType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<Fun>>() {
