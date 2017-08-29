@@ -12,5 +12,5 @@ import io.reactivex.Single;
  */
 
 public interface DataSource {
-    Single<List<Fun>> getFuns();
+    Single<List<Fun>> getFuns(int type);
 }

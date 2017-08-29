@@ -20,12 +20,12 @@ public class DataRepository implements DataSource{
     }
 
     @Override
-    public Single<List<Fun>> getFuns() {
-        Single<List<Fun>> remoteFuns = getFunsFromRemoteDataSource();
+    public Single<List<Fun>> getFuns(int type) {
+        Single<List<Fun>> remoteFuns = getFunsFromRemoteDataSource(type);
         return remoteFuns;
     }
 
-    private Single<List<Fun>> getFunsFromRemoteDataSource() {
-        return mRemoteDataSource.getFuns();
+    private Single<List<Fun>> getFunsFromRemoteDataSource(int type) {
+        return mRemoteDataSource.getFuns(type);
     }
 }

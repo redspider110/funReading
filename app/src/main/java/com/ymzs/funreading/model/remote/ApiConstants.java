@@ -11,4 +11,8 @@ public final class ApiConstants {
 
     public static final String JIANDAN_GET_FILED_NAME = "jandan.get_duan_comments";
     public static final String NHDZ_GET_FILED_NAME_CONTENT_TYPE = "-102";
+
+    public static final int API_TYPE_QSBK = 10001;
+    public static final int API_TYPE_JIANDAN = 10002;
+    public static final int API_TYPE_NHDZ = 10003;
 }
