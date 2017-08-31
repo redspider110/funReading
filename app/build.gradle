@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+// greenDao
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -50,6 +52,9 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit2Version"
     compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofit2Version"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2Version"
+
+    // greenDao
+    compile "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
     // Resolve conflicts between main and test APK:
     androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
