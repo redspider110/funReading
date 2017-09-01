@@ -1,6 +1,7 @@
 package com.ymzs.funreading.model.remote;
 
 import com.ymzs.funreading.model.DataSource;
+import com.ymzs.funreading.model.DataType;
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.remote.adapter.JiandanFunAdapter;
 import com.ymzs.funreading.model.remote.adapter.NhdzFunAdapter;
@@ -28,7 +29,7 @@ public class RemoteDataSource implements DataSource{
         ApiClient.init();
 
         switch (type){
-            case ApiConstants.API_TYPE_JIANDAN:
+            case DataType.TYPE_JIANDAN:
                 observableForGetFunFromNetWork = ApiClient.mJiandanFunService
                         .getJiandanFun(ApiConstants.JIANDAN_GET_FILED_NAME, index)
                         .map(new Function<JiandanFun, List<Fun>>() {
@@ -38,7 +39,7 @@ public class RemoteDataSource implements DataSource{
                             }
                         });
                 break;
-            case ApiConstants.API_TYPE_NHDZ:
+            case DataType.TYPE_NHDZ:
                 observableForGetFunFromNetWork = ApiClient.mNhdzFunService
                         .getNhdzFun(ApiConstants.NHDZ_GET_FILED_NAME_CONTENT_TYPE, "20", index)
                         .map(new Function<NhdzFun, List<Fun>>() {
@@ -48,7 +49,7 @@ public class RemoteDataSource implements DataSource{
                             }
                         });
                 break;
-            case ApiConstants.API_TYPE_QSBK:
+            case DataType.TYPE_QSBK:
             default:
                 observableForGetFunFromNetWork = ApiClient.mQsbkFunService
                         .getQsbkFun(index)

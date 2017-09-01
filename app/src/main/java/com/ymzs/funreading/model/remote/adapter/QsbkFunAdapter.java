@@ -1,5 +1,6 @@
 package com.ymzs.funreading.model.remote.adapter;
 
+import com.ymzs.funreading.model.DataType;
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.model.remote.entity.QsbkFun;
@@ -37,7 +38,7 @@ public class QsbkFunAdapter implements FunAdapter {
             String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
             fun.setTime(time);
             fun.setContent(item.getContent());
-            fun.setType(ApiConstants.API_TYPE_QSBK);
+            fun.setType(DataType.TYPE_QSBK);
             funs.add(fun);
         }
         return funs;

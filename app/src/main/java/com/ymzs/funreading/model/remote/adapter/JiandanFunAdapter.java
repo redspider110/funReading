@@ -1,5 +1,6 @@
 package com.ymzs.funreading.model.remote.adapter;
 
+import com.ymzs.funreading.model.DataType;
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.model.remote.entity.JiandanFun;
@@ -28,7 +29,7 @@ public class JiandanFunAdapter implements FunAdapter {
             fun.setAuthor(comment.getComment_author());
             fun.setTime(comment.getComment_date());
             fun.setContent(comment.getComment_content());
-            fun.setType(ApiConstants.API_TYPE_JIANDAN);
+            fun.setType(DataType.TYPE_JIANDAN);
             funs.add(fun);
         }
         return funs;

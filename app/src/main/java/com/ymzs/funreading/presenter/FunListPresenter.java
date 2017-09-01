@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
+import com.ymzs.funreading.model.DataType;
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.view.fragment.FunListFragment;
@@ -29,7 +30,7 @@ public class FunListPresenter implements FunListContract.Presenter{
     public FunListContract.View mFunListView;
     public Disposable mDisposable;
     private boolean mIsRefreshing = false;
-    private int apiType = ApiConstants.API_TYPE_QSBK;
+    private int apiType = DataType.TYPE_QSBK;
 
     public FunListPresenter(DataRepository dataRepository){
         mDataRepository = dataRepository;
@@ -52,11 +53,11 @@ public class FunListPresenter implements FunListContract.Presenter{
         if(mFunListView instanceof FunListFragment){
             Log.d(TAG, "takeView: view = " + ((FunListFragment) mFunListView).getName());
             if(mFunListView instanceof JiandanFragment){
-                apiType = ApiConstants.API_TYPE_JIANDAN;
+                apiType = DataType.TYPE_JIANDAN;
             }else if(mFunListView instanceof NhdzFragment){
-                apiType = ApiConstants.API_TYPE_NHDZ;
+                apiType = DataType.TYPE_NHDZ;
             }else {
-                apiType = ApiConstants.API_TYPE_QSBK;
+                apiType = DataType.TYPE_QSBK;
             }
         }
     }
