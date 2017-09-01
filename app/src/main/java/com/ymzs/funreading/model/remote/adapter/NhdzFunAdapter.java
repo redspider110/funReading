@@ -2,6 +2,7 @@ package com.ymzs.funreading.model.remote.adapter;
 
 import com.ymzs.funreading.model.Fun;
 import com.ymzs.funreading.model.FunAdapter;
+import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.model.remote.entity.NhdzFun;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ public class NhdzFunAdapter implements FunAdapter {
             String time = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
             fun.setTime(time);
             fun.setContent(group.getContent());
+            fun.setType(ApiConstants.API_TYPE_NHDZ);
             funs.add(fun);
         }
         return funs;
