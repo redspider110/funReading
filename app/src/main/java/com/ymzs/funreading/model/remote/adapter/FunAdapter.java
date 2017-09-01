@@ -1,6 +1,6 @@
-package com.ymzs.funreading.model;
+package com.ymzs.funreading.model.remote.adapter;
 
-import java.util.ArrayList;
+import com.ymzs.funreading.model.Fun;
 import java.util.List;
 
 /**

@@ -1,7 +1,6 @@
 package com.ymzs.funreading.model.remote.adapter;
 
 import com.ymzs.funreading.model.Fun;
-import com.ymzs.funreading.model.FunAdapter;
 import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.model.remote.entity.NhdzFun;
 
