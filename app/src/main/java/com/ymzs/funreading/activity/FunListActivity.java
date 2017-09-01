@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.ymzs.funreading.R;
 import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
+import com.ymzs.funreading.model.local.LocalDataSource;
 import com.ymzs.funreading.model.remote.RemoteDataSource;
 import com.ymzs.funreading.presenter.FunListPresenter;
 import com.ymzs.funreading.view.fragment.FunListFragment;
@@ -54,7 +55,7 @@ public class FunListActivity extends BaseActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.activity_fun_list_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
-        mDataRepository = new DataRepository(new RemoteDataSource());
+        mDataRepository = new DataRepository(new LocalDataSource(this), new RemoteDataSource());
     }
 
     private class FunListPagerAdapter extends FragmentPagerAdapter{
