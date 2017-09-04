@@ -6,7 +6,6 @@ import com.ymzs.funreading.contract.FunListContract;
 import com.ymzs.funreading.model.DataRepository;
 import com.ymzs.funreading.model.DataType;
 import com.ymzs.funreading.model.Fun;
-import com.ymzs.funreading.model.remote.ApiConstants;
 import com.ymzs.funreading.view.fragment.FunListFragment;
 import com.ymzs.funreading.view.fragment.JiandanFragment;
 import com.ymzs.funreading.view.fragment.NhdzFragment;
@@ -84,16 +83,13 @@ public class FunListPresenter implements FunListContract.Presenter{
                             Log.d(TAG, "onSuccess: fun = " + fun.getAuthor());
                         }
                         mFunListView.showFuns(funs);
-                        showRefresh(true);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: e = " + e);
-                        showRefresh(false);
                     }
                 });
-
     }
 
     private void dispose(){
@@ -105,16 +101,37 @@ public class FunListPresenter implements FunListContract.Presenter{
     @Override
     public void refresh() {
         mIsRefreshing = true;
-        loadFuns();
+        mDataRepository.loadMoreFuns(apiType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Fun>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        mDisposable = d;
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<Fun> funs) {
+                        Log.d(TAG, "onSuccess: funs.size = " + funs.size());
+                        mFunListView.showFuns(funs);
+                        showRefresh(true);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "onError: e = " + e);
+                        showRefresh(false);
+                    }
+                });
     }
 
     private void showRefresh(boolean isOK){
         if(mIsRefreshing){
             mIsRefreshing = false;
             if(isOK){
-                mFunListView.showRefreshError();
-            }else {
                 mFunListView.showRefreshOK();
+            }else {
+                mFunListView.showRefreshError();
             }
         }
     }
