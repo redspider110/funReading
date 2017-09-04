@@ -1,25 +1,20 @@
 package com.ymzs.funreading.model;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
-
 import com.ymzs.funreading.model.local.LocalDataSource;
 import com.ymzs.funreading.model.remote.RemoteDataSource;
-
 import org.reactivestreams.Publisher;
-
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 
 
 /**
@@ -31,56 +26,33 @@ public class DataRepository implements DataSource{
 
     private final LocalDataSource mLocalDataSource;
     private final RemoteDataSource mRemoteDataSource;
-    private Map<Long, Fun> mCachedFuns = new LinkedHashMap<>();;
-    private boolean mCacheIsDirty = false;
+    private Map<Integer, Fun> mCachedQsbkFuns = new LinkedHashMap<>();
+    private Map<Integer, Fun> mCachedNhdzFuns = new LinkedHashMap<>();
+    private Map<Integer, Fun> mCachedJiandanFuns = new LinkedHashMap<>();
 
     public DataRepository(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         mLocalDataSource = localDataSource;
         mRemoteDataSource = remoteDataSource;
     }
 
-    /**
-     * First get funs.
-     * @param type: api type.
-     * @return if network is connected, return funs from internet;
-     *          or return funs from db.
-     */
     @Override
     public Single<List<Fun>> getFuns(final int type) {
-        Log.d(TAG, "getFuns: type = " + type + ", mCacheIsDirty = " + mCacheIsDirty);
-        if (mCachedFuns != null && mCachedFuns.size() > 0 && !mCacheIsDirty) {
-            Log.d(TAG, "getFuns: caches");
-            Observable<Fun> funObservable = Observable.fromIterable(mCachedFuns.values());
-            long count = funObservable.filter(new Predicate<Fun>() {
-                @Override
-                public boolean test(@NonNull Fun fun) throws Exception {
-                    return (fun.getType() == type);
-                }
-            }).count().blockingGet();
-            Log.d(TAG, "getFuns: count = " + count);
-            if(count > 0) {
-                return funObservable.toList();
-            }
-        }
+        Log.d(TAG, "getFuns: type = " + type);
 
         Single<List<Fun>> remoteFuns = getAndSaveRemoteFuns(type);
-        if(mCacheIsDirty){
-            return remoteFuns;
-        }else {
-            Single<List<Fun>> localFuns = getAndCacheLocalFuns(type);
-            return Single.concat(localFuns, remoteFuns)
-                    .filter(new Predicate<List<Fun>>() {
-                        @Override
-                        public boolean test(@NonNull List<Fun> funs) throws Exception {
-                            return !funs.isEmpty();
-                        }
-                    })
-                    .distinct()
-                    .firstOrError();
-        }
+        Single<List<Fun>> localFuns = getAndCacheLocalFuns(type);
+        return Single.concat(localFuns, remoteFuns)
+                .flatMap(new Function<List<Fun>, Publisher<Fun>>() {
+                    @Override
+                    public Publisher<Fun> apply(@NonNull List<Fun> funs) throws Exception {
+                        return Flowable.fromIterable(funs);
+                    }
+                })
+                .distinct()
+                .toList();
     }
 
-    private Single<List<Fun>> getAndCacheLocalFuns(int type) {
+    private Single<List<Fun>> getAndCacheLocalFuns(final int type) {
         Log.d(TAG, "getAndCacheLocalFuns: ");
         return mLocalDataSource.getFuns(type)
                 .flatMap(new Function<List<Fun>, SingleSource<List<Fun>>>() {
@@ -90,51 +62,70 @@ public class DataRepository implements DataSource{
                                 .doOnNext(new Consumer<Fun>() {
                                     @Override
                                     public void accept(Fun fun) throws Exception {
-                                        mCachedFuns.put(fun.getId(), fun);
+                                        putCachedFuns(type, fun);
                                     }
                                 }).toList();
                     }
                 });
     }
 
-    private Single<List<Fun>> getAndSaveRemoteFuns(int type){
+    private Single<List<Fun>> getAndSaveRemoteFuns(final int type){
         Log.d(TAG, "getAndSaveRemoteFuns: ");
         return mRemoteDataSource.getFuns(type)
                 .flatMap(new Function<List<Fun>, SingleSource<List<Fun>>>() {
                     @Override
                     public SingleSource<List<Fun>> apply(@NonNull List<Fun> funs) throws Exception {
+                        // 1. clear db.
+                        Collection<Fun> cachesFuns = getCachedFuns(type).values();
+                        if(cachesFuns != null && cachesFuns.size() > 0) {
+                            mLocalDataSource.deleteFuns(cachesFuns);
+                        }
                         return Observable.fromIterable(funs)
                                 .doOnNext(new Consumer<Fun>() {
                                     @Override
                                     public void accept(Fun fun) throws Exception {
+                                        // 2. save new fun from network.
+                                        // db.
                                         mLocalDataSource.saveFun(fun);
-                                        mCachedFuns.put(fun.getId(), fun);
+                                        // cache.
+                                        putCachedFuns(type, fun);
                                     }
                                 })
                                 .toList();
                     }
-                })
-                .doAfterSuccess(new Consumer<List<Fun>>() {
-                    @Override
-                    public void accept(List<Fun> funs) throws Exception {
-                        mCacheIsDirty = false;
-                    }
                 });
     }
 
-    public Single<List<Fun>> loadMore(final int type){
-        Log.d(TAG, "loadMore: ");
+    public Single<List<Fun>> loadMoreFuns(final int type){
         Single<List<Fun>> remoteFuns = getAndSaveRemoteFuns(type);
-        Single<List<Fun>> cachedFuns = Observable.fromIterable(mCachedFuns.values())
-                .filter(new Predicate<Fun>() {
-                    @Override
-                    public boolean test(@NonNull Fun fun) throws Exception {
-                        return (fun.getType() == type);
-                    }
-                }).toList();
+        Single<List<Fun>> cachedFuns = Observable.fromIterable(getCachedFuns(type).values()).toList();
 
         return Single.concat(remoteFuns, cachedFuns)
+                .flatMap(new Function<List<Fun>, Publisher<Fun>>() {
+                    @Override
+                    public Publisher<Fun> apply(@NonNull List<Fun> funs) throws Exception {
+                        return Flowable.fromIterable(funs);
+                    }
+                })
                 .distinct()
-                .firstOrError();
+                .toList();
+    }
+
+    private Map<Integer, Fun> getCachedFuns(int type){
+        switch (type) {
+            case DataType.TYPE_JIANDAN:
+                return mCachedJiandanFuns;
+            case DataType.TYPE_NHDZ:
+                return mCachedNhdzFuns;
+            case DataType.TYPE_QSBK:
+            default:
+                return mCachedQsbkFuns;
+        }
+    }
+
+    private void putCachedFuns(int type, Fun fun){
+        Map<Integer, Fun> map = getCachedFuns(type);
+        int index = map.size();
+        map.put(index, fun);
     }
 }

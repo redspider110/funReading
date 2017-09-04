@@ -1,6 +1,7 @@
 package com.ymzs.funreading.model.local;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ymzs.funreading.model.DataSource;
 import com.ymzs.funreading.model.Fun;
@@ -11,7 +12,9 @@ import com.ymzs.funreading.model.local.db.FunDao;
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.Single;
 
@@ -20,13 +23,15 @@ import io.reactivex.Single;
  */
 
 public class LocalDataSource implements DataSource{
-
+    private static final String TAG = ":XMT:LocalDataSource:";
 
     private DaoSession mDaoSession;
+    private FunDao mFunDao;
 
     public LocalDataSource(Context context){
         DbHelper dbHelper = new DbHelper(context);
         mDaoSession = dbHelper.getDaoSession();
+        mFunDao = mDaoSession.getFunDao();
     }
 
     @Override
@@ -39,6 +44,10 @@ public class LocalDataSource implements DataSource{
     }
 
     public void saveFun(Fun fun){
-        mDaoSession.getFunDao().insert(fun);
+        mFunDao.insert(fun);
+    }
+
+    public void deleteFuns(Collection<Fun> funs){
+        mFunDao.deleteInTx(funs);
     }
 }
