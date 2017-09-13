@@ -8,6 +8,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -20,7 +24,7 @@ import io.reactivex.functions.Function;
 /**
  * Created by xumingtao on 2017/8/22.
  */
-
+@Singleton
 public class DataRepository implements DataSource{
     private static final String TAG = ":XMT:DataRepository:";
 
@@ -30,6 +34,7 @@ public class DataRepository implements DataSource{
     private Map<Integer, Fun> mCachedNhdzFuns = new LinkedHashMap<>();
     private Map<Integer, Fun> mCachedJiandanFuns = new LinkedHashMap<>();
 
+    @Inject
     public DataRepository(LocalDataSource localDataSource, RemoteDataSource remoteDataSource) {
         mLocalDataSource = localDataSource;
         mRemoteDataSource = remoteDataSource;
