@@ -133,4 +133,12 @@ public class DataRepository implements DataSource{
         int index = map.size();
         map.put(index, fun);
     }
+
+    public Single<List<Photo>> loadPhotos(){
+        return mRemoteDataSource.getPhotos();
+    }
+
+    public Single<List<Photo>> loadMorePhotos(){
+        return mRemoteDataSource.getPhotos();
+    }
 }
