@@ -14,4 +14,6 @@
         <item>@string/title_nhdz</item>
     </string-array>
     <string name="unknown_author">UnKnown</string>
+    <string name="nav_menu_photo">Photos</string>
+    <string name="nav_menu_about">About</string>
 </resources>

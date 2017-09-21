@@ -1,5 +1,6 @@
 package com.ymzs.funreading.activity;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -117,6 +118,11 @@ public class FunListActivity extends BaseActivity {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_menu_fun_list:
                                 // null
+                                break;
+                            case R.id.nav_menu_photo:
+                                // null
+                                Intent intent = new Intent(FunListActivity.this, PhotoListActivity.class);
+                                startActivity(intent);
                                 break;
                             case R.id.nav_menu_about:
                                 // null

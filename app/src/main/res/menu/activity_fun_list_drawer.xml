@@ -8,8 +8,12 @@
             android:icon="@drawable/example_appwidget_preview"
             android:title="@string/app_name" />
         <item
+            android:id="@+id/nav_menu_photo"
+            android:icon="@drawable/example_appwidget_preview"
+            android:title="@string/nav_menu_photo" />
+        <item
             android:id="@+id/nav_menu_about"
             android:icon="@drawable/example_appwidget_preview"
-            android:title="@string/app_name" />
+            android:title="@string/nav_menu_about" />
     </group>
 </menu>
