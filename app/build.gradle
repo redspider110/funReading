@@ -61,6 +61,9 @@ dependencies {
     // greenDao
     compile "org.greenrobot:greendao:$rootProject.greenDaoVersion"
 
+    // glide
+    compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+
     // Resolve conflicts between main and test APK:
     androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     androidTestCompile "com.android.support:support-v4:$rootProject.supportLibraryVersion"

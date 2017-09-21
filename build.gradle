@@ -46,6 +46,7 @@ ext {
     rxAndroidVersion = '2.0.1'
     retrofit2Version = '2.3.0'
     greenDaoVersion = '3.2.2'
+    glideVersion = '3.8.0'
 }
 
 // Dagger2:
