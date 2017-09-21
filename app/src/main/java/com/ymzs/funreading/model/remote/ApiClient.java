@@ -3,6 +3,7 @@ package com.ymzs.funreading.model.remote;
 import com.ymzs.funreading.model.remote.service.JiandanFunService;
 import com.ymzs.funreading.model.remote.service.NhdzFunService;
 import com.ymzs.funreading.model.remote.service.QsbkFunService;
+import com.ymzs.funreading.model.remote.service.TuChongPhotoService;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -16,11 +17,13 @@ public final class ApiClient {
     public static QsbkFunService mQsbkFunService;
     public static JiandanFunService mJiandanFunService;
     public static NhdzFunService mNhdzFunService;
+    public static TuChongPhotoService mTuChongPhotoService;
 
     public static void init(){
         mQsbkFunService = initService(ApiConstants.QSBK_TEXT_API_HOST, QsbkFunService.class);
         mJiandanFunService = initService(ApiConstants.JIANDAN_JOKE_API_HOST, JiandanFunService.class);
         mNhdzFunService = initService(ApiConstants.NHDZ_DUANZI_API_HOST, NhdzFunService.class);
+        mTuChongPhotoService = initService(ApiConstants.TU_CHONG_API_HOST, TuChongPhotoService.class);
     }
 
     private static <T> T initService(String url, Class<T> clazz){
