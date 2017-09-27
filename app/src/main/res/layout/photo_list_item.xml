@@ -44,7 +44,7 @@
         app:layout_constraintLeft_toRightOf="@+id/photo_item_list_img_author"
         android:layout_marginLeft="16dp"/>
 
-    <ImageView
+    <com.ymzs.funreading.view.common.CircleImageView
         android:id="@+id/photo_item_list_img_author"
         android:layout_width="30dp"
         android:layout_height="30dp"
