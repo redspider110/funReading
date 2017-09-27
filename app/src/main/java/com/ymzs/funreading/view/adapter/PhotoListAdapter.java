@@ -48,6 +48,7 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.Phot
                 .load(photo.getTitleImageUrl())
                 //.centerCrop()
                 //.fitCenter()
+                .placeholder(R.drawable.logo)
                 .into(holder.mImgTitle);
         holder.mTvAuthor.setText(photo.getAuthor());
         //holder.mImgAuthorIcon.setImageURI(photo.getAuthorIconUrl());
