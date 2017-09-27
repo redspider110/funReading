@@ -55,6 +55,7 @@ public class PhotoListFragment extends BaseFragment implements PhotoListContract
         mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mPhotoListAdapter = new PhotoListAdapter(getContext());
         mPhotoListAdapter.setData(new ArrayList<Photo>(0));
+        mPhotoRecyclerView.addItemDecoration(new PhotoListAdapter.DividerItemDecoration(getContext()));
         mPhotoRecyclerView.setAdapter(mPhotoListAdapter);
         mSwipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.fragment_photo_list_swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
