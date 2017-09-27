@@ -11,6 +11,8 @@ public class Photo {
     private String author;
     private String authorIconUrl;
     private String time;
+    private String tag;
+    private String content;
 
     public Long getId() {
         return id;
@@ -60,6 +62,22 @@ public class Photo {
         this.time = time;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         return "Photo{" +
@@ -69,6 +87,8 @@ public class Photo {
                 ", author='" + author + '\'' +
                 ", authorIconUrl='" + authorIconUrl + '\'' +
                 ", time='" + time + '\'' +
+                ", tag='" + tag + '\'' +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

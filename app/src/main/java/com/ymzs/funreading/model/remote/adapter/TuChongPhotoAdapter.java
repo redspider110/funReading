@@ -30,6 +30,8 @@ public class TuChongPhotoAdapter implements PhotoAdapter {
             photo.setTitleImageUrl(getTitleImageUrl(feedList));
             photo.setAuthor(feedList.getSite().getName());
             photo.setAuthorIconUrl(feedList.getSite().getIcon());
+            photo.setTag(feedList.getTags().get(0));
+            photo.setContent(feedList.getContent());
             photos.add(photo);
         }
         return photos;
