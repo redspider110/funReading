@@ -63,6 +63,10 @@ dependencies {
     // glide
     compile "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
+    //leakcanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.leakVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakVersion"
+
     // Resolve conflicts between main and test APK:
     androidTestCompile "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
     androidTestCompile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
